@@ -1,0 +1,196 @@
+html {
+  font-family: "Montserrat";
+  font-size: 20px;
+}
+
+body {
+  margin: 0;
+  background-color:#fff3e0 ;
+}
+
+header {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  padding-left: 32px;
+  padding-right: 8px;
+  height: 64px;
+  position:relative;
+  top: 0;
+}
+
+.logo {
+  font-weight: 800;
+  font-size: 50px;
+  color: orange;
+}
+
+.menu {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+}
+
+.menu p {
+  margin-right: 24px;
+}
+
+.menu p a {
+  text-decoration: none;
+  color: grey;
+  display: inline-block;
+}
+
+.order-button {
+  padding: 8px 24px;
+  border-radius: 18px;
+  background-color: black;
+  color: orange !important;
+}
+
+.banner {
+  display: flex;
+  flex-direction: row;
+  height: 400px;
+  padding-left: 32px;
+}
+
+.banner .content {
+  min-width: 270px;
+  width: 100%;
+  margin-top: 80px;
+}
+
+.banner img {
+  width: 43vw;
+  object-fit: cover;
+  clip-path: polygon(13% 0, 100% 0%, 100% 100%, 0% 100%);
+}
+
+.banner h1 {
+  font-size: 40px;
+}
+
+.call-to-action {
+  font-weight: 700;
+}
+
+.call-to-action:hover  {
+  transform: translateX(6px);
+}
+
+.call-to-action i {
+  transition: transform 150ms ease-in-out;
+  color: orange;
+  font-size: 18px;
+  margin-left: 8px;
+}
+
+.food-recommender {
+  padding: 16px 32px;
+}
+
+.link{
+  margin-right: 24px;
+  text-decoration: none;
+  color: grey;
+  display: inline-block;
+}
+
+.about-container {
+  max-width: 800px; 
+  margin: 60px auto; 
+  padding: 40px 20px; 
+  font-family: 'Arial', sans-serif;
+  background-color: #fff3e0; 
+  color: #333; 
+  text-align: center; 
+  border: orange 2px solid;
+  border-radius: 20px;
+}
+
+.about-container h1 {
+  font-size: 2.5rem;
+  color: orange; 
+  margin-bottom: 30px; 
+  background-color: #020202;
+}
+
+.about-container p {
+  font-size: 1rem; 
+  line-height: 1.8; 
+  margin-bottom: 20px; 
+  text-align: left; 
+  max-width: 700px; 
+  margin-left: auto; 
+  margin-right: auto; 
+}
+
+.about-container strong {
+  color: orange; 
+}
+
+#menuTitle{
+  text-align: center;
+  color: orange;
+  font-family: 'Times New Roman', Times, serif;
+  font-size: 70px;
+  margin: 50px 0 0 -60px;
+  font-weight: bolder;
+}
+
+label{
+  margin-right: 10px;
+}
+input{
+  margin-right: 2px;
+}
+
+.notification {
+  background-color: orange !important;
+  color: white;
+  padding: 10px;
+  border-radius: 5px;
+  position: fixed;
+  top: 10px;
+  right: 10px;
+  z-index: 1000;
+  animation: fadeInOut 3s forwards;
+  margin-top: 45px;
+}
+
+@keyframes fadeInOut {
+  0% {
+    opacity: 0;
+  }
+  10% {
+    opacity: 1;
+  }
+  90% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+.log{
+  margin-top: 10px;
+  background-color: orange;
+  color: white;
+  padding: 10px;
+  border: none;
+  cursor: pointer;
+  width: 100%;
+  text-align: center;
+  display: inline-block;
+
+}
+
+.log:hover{
+  background-color: black;
+  color: orange;
+}
