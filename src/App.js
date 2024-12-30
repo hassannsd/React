@@ -1,5 +1,10 @@
 import React, { useState } from "react";
-import { BrowserRouter as Router, Route, Routes } from "react-router-dom"; // Updated imports for v6
+import {
+  BrowserRouter as Router,
+  Route,
+  Routes,
+  HashRouter,
+} from "react-router-dom"; // Updated imports for v6
 import MenuItems from "./MenuItems";
 import Cart from "./Cart";
 import Home from "./Home";
@@ -66,7 +71,7 @@ const App = () => {
   };
 
   return (
-    <Router>
+    <HashRouter>
       <div>
         <Routes>
           <Route path="/" element={<AdminLogin />} />
@@ -107,7 +112,7 @@ const App = () => {
           <Route path="*" element={<h1> Error 404 </h1>} />
         </Routes>
       </div>
-    </Router>
+    </HashRouter>
   );
 };
 
