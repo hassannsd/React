@@ -35,7 +35,7 @@ const AdminLogin = () => {
         if (isAdmin === 1) {
           navigate("/addItem"); // Navigate to Add Item page for admin
         } else {
-          navigate("/Home"); // Navigate to home page for non-admin
+          navigate("/"); // Navigate to home page for non-admin
         }
       } else {
         setMessage(response.data.message); // Show error message if login fails

@@ -28,6 +28,9 @@ const Header = () => (
         <Link to="/cart" className="link">
           Cart
         </Link>
+        <Link to="/login" className="link orange">
+          LogIn
+        </Link>
       </div>
     </nav>
   </header>

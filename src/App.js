@@ -74,8 +74,8 @@ const App = () => {
     <HashRouter>
       <div>
         <Routes>
-          <Route path="/" element={<AdminLogin />} />
-          <Route path="/Home" element={<Home />} />
+          <Route path="/" element={<Home />} />
+          <Route path="/login" element={<AdminLogin />} />
           <Route path="/about" element={<About />} />
           <Route
             path="/menu"
