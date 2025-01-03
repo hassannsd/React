@@ -14,6 +14,9 @@ import About from "./About";
 import AdminLogin from "./AdminLogin";
 import AddItem from "./AddItem";
 import Signup from "./components/Signup";
+import axios from "axios";
+import Profile from "./components/Profile";
+import AdminPage from "./AdminItems";
 
 const Notification = ({ show, message }) => {
   return show && <div className="notification">{message}</div>;
@@ -23,29 +26,22 @@ const App = () => {
   const [cart, setCart] = useState([]);
   const [notificationVisible, setNotificationVisible] = useState(false);
 
-  const addItemToCart = (item) => {
-    setCart((prevCart) => {
-      // Check if item already exists in the cart
-      const existingItem = prevCart.find((cartItem) => cartItem.id === item.id);
+  const addItemToCart = async (item) => {
+    try {
+      // Send the item to the backend to add it to the cart database
+      await axios.post("http://localhost/web-advanced-project/cart.php", {
+        item_id: item.Id,
+        quantity: 1, // Default quantity to add
+      });
 
-      if (existingItem) {
-        // If the item already exists, increment its quantity
-        return prevCart.map((cartItem) =>
-          cartItem.id === item.id
-            ? { ...cartItem, quantity: cartItem.quantity + 1 }
-            : cartItem
-        );
-      } else {
-        // If the item doesn't exist, add it to the cart with quantity 1
-        return [...prevCart, { ...item, quantity: 1 }];
-      }
-    });
-
-    // Show notification for 3 seconds
-    setNotificationVisible(true);
-    setTimeout(() => {
-      setNotificationVisible(false);
-    }, 3000);
+      // Show notification for 3 seconds
+      setNotificationVisible(true);
+      setTimeout(() => {
+        setNotificationVisible(false);
+      }, 3000);
+    } catch (error) {
+      console.error("Error adding item to cart:", error);
+    }
   };
 
   const removeItemFromCart = (itemId) => {
@@ -109,6 +105,8 @@ const App = () => {
             }
           />
           <Route path="/addItem" element={<AddItem />} />
+          <Route path="/items" element={<AdminPage />} />
+          <Route path="/profile" element={<Profile />} />
           <Route path="*" element={<h1> Error 404 </h1>} />
         </Routes>
       </div>

@@ -31,7 +31,6 @@ const MenuTabs = ({
             id="all-menu"
             className={`nav-link ${activeTab === "all-menu" ? "active" : ""}`}
             onClick={() => handleActive("all-menu")}
-            href="#"
             style={{
               color: "black",
               backgroundColor: activeTab === "all-menu" ? "orange" : "",
@@ -45,7 +44,6 @@ const MenuTabs = ({
             id="burger"
             className={`nav-link ${activeTab === "burger" ? "active" : ""}`}
             onClick={() => handleActive("burger")}
-            href="#"
             style={{
               color: "black",
               backgroundColor: activeTab === "burger" ? "orange" : "",
@@ -59,7 +57,6 @@ const MenuTabs = ({
             id="wrap"
             className={`nav-link ${activeTab === "wrap" ? "active" : ""}`}
             onClick={() => handleActive("wrap")}
-            href="#"
             style={{
               color: "black",
               backgroundColor: activeTab === "wrap" ? "orange" : "",

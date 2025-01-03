@@ -1,12 +1,11 @@
 import React, { useState } from "react";
-import { useNavigate, Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
 const AdminLogin = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [message, setMessage] = useState("");
-
   const navigate = useNavigate();
 
   const handleLogin = async (e) => {
@@ -18,27 +17,22 @@ const AdminLogin = () => {
         {
           username: username,
           password: password,
-        },
-        {
-          headers: {
-            "Content-Type": "application/json", // Ensure Content-Type is correct
-          },
         }
       );
 
-      if (response.data.success) {
-        setMessage("Admin login successful!");
+      if (response.data.success && response.data.user) {
+        const user = response.data.user;
+        // Save the user data to localStorage
+        localStorage.setItem("user", JSON.stringify(user));
+        setMessage("Login successful!");
 
-        // Convert isAdmin to a number to avoid string/number comparison issues
-        const isAdmin = Number(response.data.isAdmin);
-
-        if (isAdmin === 1) {
-          navigate("/addItem"); // Navigate to Add Item page for admin
+        if (Number(user.isAdmin == 1)) {
+          navigate("/addItem"); // Redirect admin to addItem page
         } else {
-          navigate("/"); // Navigate to home page for non-admin
+          navigate("/"); // Redirect non-admin to profile page
         }
       } else {
-        setMessage(response.data.message); // Show error message if login fails
+        setMessage(response.data.message || "Login failed");
       }
     } catch (error) {
       console.error("Error during login:", error);
@@ -74,7 +68,10 @@ const AdminLogin = () => {
           Login
         </button>
         <button className="log" onClick={() => navigate("/signup")}>
-          Create Account
+          Sign Up
+        </button>
+        <button className="log" onClick={() => navigate("/")}>
+          Continue Without Login
         </button>
       </form>
 

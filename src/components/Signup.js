@@ -70,7 +70,7 @@ const Signup = ({
 
   return (
     <div style={{ maxWidth: "400px", margin: "auto", padding: "20px" }}>
-      <h2>Signup</h2>
+      <h2>Create Account</h2>
       <form onSubmit={handleSubmit} method="POST">
         <div style={{ marginBottom: "10px" }}>
           <label>Username:</label>
@@ -105,7 +105,7 @@ const Signup = ({
             width: "100%",
           }}
         >
-          Signup
+          Sign Up
         </button>
       </form>
       {message && (
