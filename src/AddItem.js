@@ -31,7 +31,7 @@ const AddItem = () => {
 
     try {
       const response = await axios.post(
-        "http://localhost/web-advanced-project/add_item.php",
+        "http://localhost/web-advanced-project/API/add_item.php",
         new URLSearchParams(formData)
       );
       if (response.data.success) {

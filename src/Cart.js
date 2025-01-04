@@ -10,7 +10,7 @@ const Cart = () => {
     const fetchCart = async () => {
       try {
         const response = await axios.get(
-          "http://localhost/web-advanced-project/cart.php"
+          "http://localhost/web-advanced-project/API/cart.php"
         ); // Adjust the URL to your PHP endpoint
         setCart(response.data); // Set cart items from the response
       } catch (error) {

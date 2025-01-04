@@ -60,7 +60,7 @@ const Signup = ({
 
     try {
       const response = await fetch(
-        "http://localhost/web-advanced-project/signup.php",
+        "http://localhost/web-advanced-project/API/signup.php",
         {
           method: "POST",
           body: formData,

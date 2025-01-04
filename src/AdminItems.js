@@ -9,7 +9,7 @@ const AdminPage = () => {
 
   useEffect(() => {
     axios
-      .get("http://localhost/web-advanced-project/fetch_items.php")
+      .get("http://localhost/web-advanced-project/API/fetch_items.php")
       .then((response) => {
         if (response.data.success) {
           setItems(response.data.items);
@@ -34,7 +34,7 @@ const AdminPage = () => {
 
     axios
       .post(
-        "http://localhost/web-advanced-project/delete_item.php",
+        "http://localhost/web-advanced-project/API/delete_item.php",
         new URLSearchParams({ Id: itemId }),
         {
           headers: {
