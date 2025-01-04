@@ -22,14 +22,13 @@ const AdminLogin = () => {
 
       if (response.data.success && response.data.user) {
         const user = response.data.user;
-        // Save the user data to localStorage
         localStorage.setItem("user", JSON.stringify(user));
         setMessage("Login successful!");
 
         if (Number(user.isAdmin == 1)) {
-          navigate("/addItem"); // Redirect admin to addItem page
+          navigate("/addItem");
         } else {
-          navigate("/"); // Redirect non-admin to profile page
+          navigate("/");
         }
       } else {
         setMessage(response.data.message || "Login failed");

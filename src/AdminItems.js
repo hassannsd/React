@@ -1,14 +1,15 @@
 import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
 const AdminPage = () => {
   const [items, setItems] = useState([]);
   const [message, setMessage] = useState("");
+  const navigate = useNavigate();
 
-  // Fetch items when the component mounts
   useEffect(() => {
     axios
-      .get("http://localhost/web-advanced-project/fetch_item.php")
+      .get("http://localhost/web-advanced-project/fetch_items.php")
       .then((response) => {
         if (response.data.success) {
           setItems(response.data.items);
@@ -22,18 +23,31 @@ const AdminPage = () => {
       });
   }, []);
 
-  // Handle deleting an item
   const handleDelete = (itemId) => {
+    const isConfirmed = window.confirm(
+      "Are you sure you want to delete this item?"
+    );
+
+    if (!isConfirmed) {
+      return;
+    }
+
     axios
-      .delete("http://localhost/web-advanced-project/delete_item.php", {
-        data: { id: itemId },
-      })
+      .post(
+        "http://localhost/web-advanced-project/delete_item.php",
+        new URLSearchParams({ Id: itemId }),
+        {
+          headers: {
+            "Content-Type": "application/x-www-form-urlencoded",
+          },
+        }
+      )
       .then((response) => {
         if (response.data.success) {
-          setItems(items.filter((item) => item.id !== itemId)); // Remove the item from the state
+          setItems(items.filter((item) => item.Id !== itemId));
           setMessage("Item deleted successfully");
         } else {
-          setMessage("Error deleting item");
+          setMessage(response.data.message || "Error deleting item");
         }
       })
       .catch((error) => {
@@ -44,14 +58,19 @@ const AdminPage = () => {
 
   return (
     <div style={{ padding: "20px" }}>
-      <h2>All Items</h2>
-      {message && <p style={{ color: "red" }}>{message}</p>}
+      <div>
+        <h2>All Items</h2>
+        <button className="link" onClick={() => navigate("/addItem")}>
+          Back
+        </button>
+        {message && <p style={{ color: "red" }}>{message}</p>}
+      </div>
 
       <ul>
         {items.length > 0 ? (
           items.map((item) => (
             <li
-              key={item.id}
+              key={item.Id}
               style={{
                 marginBottom: "10px",
                 display: "flex",
@@ -59,11 +78,9 @@ const AdminPage = () => {
                 width: "350px",
               }}
             >
-              <span>
-                {item.Id} - {item.Name}
-              </span>
+              <span> - {item.Name}</span>
               <button
-                onClick={() => handleDelete(item.id)}
+                onClick={() => handleDelete(item.Id)}
                 style={{
                   marginLeft: "10px",
                   backgroundColor: "red",

@@ -4,8 +4,8 @@ import Header from "./components/Header";
 
 const Cart = () => {
   const [cart, setCart] = useState([]);
+  const [message, setMessage] = useState("");
 
-  // Fetch the cart data from the database
   useEffect(() => {
     const fetchCart = async () => {
       try {
@@ -29,10 +29,9 @@ const Cart = () => {
     try {
       await axios.put("http://localhost/web-advanced-project/cart.php", {
         cart_id: cartId,
-        quantity: currentQuantity + 1, // Increment quantity
+        quantity: currentQuantity + 1, 
       });
 
-      // Fetch updated cart data
       const response = await axios.get(
         "http://localhost/web-advanced-project/cart.php"
       );
@@ -47,10 +46,10 @@ const Cart = () => {
       try {
         await axios.put("http://localhost/web-advanced-project/cart.php", {
           cart_id: cartId,
-          quantity: currentQuantity - 1, // Decrement quantity
+          quantity: currentQuantity - 1, 
         });
 
-        // Fetch updated cart data
+        
         const response = await axios.get(
           "http://localhost/web-advanced-project/cart.php"
         );
@@ -63,17 +62,22 @@ const Cart = () => {
 
   const removeItemFromCart = async (cartId) => {
     try {
-      await axios.delete("http://localhost/web-advanced-project/cart.php", {
-        data: { cart_id: cartId },
-      });
-
-      // Fetch updated cart data
-      const response = await axios.get(
-        "http://localhost/web-advanced-project/cart.php"
+      const response = await axios.delete(
+        "http://localhost/web-advanced-project/cart.php",
+        {
+          data: { cart_id: cartId }, 
+        }
       );
-      setCart(Array.isArray(response.data) ? response.data : []);
+
+      if (response.data.success) {
+        setCart(cart.filter((item) => item.cart_id !== cartId)); 
+        setMessage("Item deleted successfully");
+      } else {
+        setMessage(response.data.message || "Error deleting item");
+      }
     } catch (error) {
-      console.error("Error removing item from cart:", error);
+      console.error("Error deleting item:", error);
+      setMessage("An error occurred while deleting the item.");
     }
   };
 
@@ -86,8 +90,13 @@ const Cart = () => {
         {cart && cart.length > 0 ? (
           cart.map((item) => (
             <li
-              key={item.id}
+              key={item.cart_id}
               className="list-group-item d-flex justify-content-between align-items-center"
+              style={{
+                paddingBottom: "5px",
+                marginTop: "10px",
+                borderBottom: "1px solid gray",
+              }}
             >
               <div>
                 {item.Name} - ${Number(item.price).toFixed(2)} x {item.quantity}
@@ -96,19 +105,19 @@ const Cart = () => {
                 <button
                   className="btn btn-warning btn-sm mx-1"
                   disabled={item.quantity === 1}
-                  onClick={() => decrementQuantity(item.id)}
+                  onClick={() => decrementQuantity(item.cart_id, item.quantity)}
                 >
                   -
                 </button>
                 <button
                   className="btn btn-primary btn-sm mx-1"
-                  onClick={() => incrementQuantity(item.id)}
+                  onClick={() => incrementQuantity(item.cart_id, item.quantity)}
                 >
                   +
                 </button>
                 <button
                   className="btn btn-danger btn-sm mx-1"
-                  onClick={() => removeItemFromCart(item.id)}
+                  onClick={() => removeItemFromCart(item.cart_id)}
                 >
                   Remove
                 </button>
@@ -118,6 +127,14 @@ const Cart = () => {
         ) : (
           <p className="text-muted">Your cart is empty. Start adding items!</p>
         )}
+        <div
+          className="mt-4"
+          style={{ display: "flex", justifyContent: "space-between" }}
+        >
+          <strong>Total: ${calculateTotal().toFixed(2)}</strong>
+          <button className="btn btn-success">Checkout</button>
+        </div>
+        {message && <div className="alert alert-info mt-3">{message}</div>}
       </div>
     </>
   );

@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import axios from "axios";
-import { Link, useNavigate } from "react-router-dom"; // Import Link for navigation
+import { Link, useNavigate } from "react-router-dom"; 
 import LoginButton from "./components/LoginButton";
 
 const AddItem = () => {
@@ -24,7 +24,6 @@ const AddItem = () => {
     setMessage("");
     setError("");
 
-    // Ensure price is numeric before sending to backend
     if (isNaN(formData.price) || parseFloat(formData.price) <= 0) {
       setError("Please enter a valid price greater than zero.");
       return;
@@ -37,7 +36,6 @@ const AddItem = () => {
       );
       if (response.data.success) {
         setMessage(response.data.message);
-        // Clear form fields on successful submission
         setFormData({ name: "", type: "", price: "" });
       } else {
         setError(response.data.message);

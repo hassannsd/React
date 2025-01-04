@@ -8,7 +8,6 @@ const MenuTabs = ({
   const [activeTab, setActiveTab] = useState("all-menu");
   const [filteredItems, setFilteredItems] = useState(menuItems);
 
-  // Update filtered items whenever menuItems prop changes
   useEffect(() => {
     setFilteredItems(menuItems);
   }, [menuItems]);

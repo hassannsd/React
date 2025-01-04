@@ -8,7 +8,7 @@ const Profile = () => {
 
     if (userData) {
       try {
-        setUser(JSON.parse(userData)); // Set user data from localStorage
+        setUser(JSON.parse(userData));
       } catch (error) {
         console.error("Error parsing user data:", error);
       }

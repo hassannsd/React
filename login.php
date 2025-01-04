@@ -7,17 +7,7 @@ header("Content-Type: application/json");
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
 
-$servername = "localhost";
-$username = "root"; // Your database username
-$password = ""; // Your database password
-$dbname = "restaurant";
-
-$conn = new mysqli($servername, $username, $password, $dbname);
-
-if ($conn->connect_error) {
-    echo json_encode(["success" => false, "message" => "Database connection failed: " . $conn->connect_error]);
-    exit;
-}
+require_once("./config.php");
 
 $data = json_decode(file_get_contents("php://input"), true);
 
@@ -29,13 +19,11 @@ if (!isset($data["username"]) || !isset($data["password"])) {
 $username = $conn->real_escape_string($data["username"]);
 $password = $data["password"];
 
-// Check if the user exists
 $sql = "SELECT * FROM users WHERE username = '$username'";
 $result = $conn->query($sql);
 
 if ($result->num_rows > 0) {
     $user = $result->fetch_assoc();
-    // If password is correct (ensure to use password_verify if hashing passwords)
     if ($password === $user["password"]) {
         echo json_encode([
             "success" => true,

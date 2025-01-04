@@ -8,14 +8,18 @@ const Signup = ({
 }) => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [address, setAddress] = useState("");
   const [message, setMessage] = useState("");
   const [error, setError] = useState("");
 
   const navigate = useNavigate();
 
   const validateInput = () => {
-    const usernameRegex = /^[a-zA-Z0-9]{8,15}$/; // 8-15 characters, no special characters
-    const passwordRegex = /^(?=.*[A-Z])(?=.*\d)[A-Za-z\d]{8,15}$/; // 8-15 characters, at least one uppercase letter and one number
+    const usernameRegex = /^[a-zA-Z0-9]{8,15}$/;
+    const passwordRegex = /^(?=.*[A-Z])(?=.*\d)[A-Za-z\d]{8,15}$/;
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
     if (!usernameRegex.test(username)) {
       setError(
@@ -27,6 +31,14 @@ const Signup = ({
       setError(
         "Password must be 8-15 characters long and include at least one uppercase letter and one number."
       );
+      return false;
+    }
+    if (!emailRegex.test(email)) {
+      setError("Please enter a valid email address.");
+      return false;
+    }
+    if (!name || !address) {
+      setError("Name and address are required.");
       return false;
     }
 
@@ -42,6 +54,9 @@ const Signup = ({
     const formData = new FormData();
     formData.append("username", username);
     formData.append("password", password);
+    formData.append("name", name);
+    formData.append("email", email);
+    formData.append("address", address);
 
     try {
       const response = await fetch(
@@ -58,6 +73,9 @@ const Signup = ({
         setMessage("Signup successful!");
         setUsername("");
         setPassword("");
+        setName("");
+        setEmail("");
+        setAddress("");
         navigate("/");
       } else {
         setNotificationVisible(true);
@@ -90,6 +108,39 @@ const Signup = ({
             name="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
+            style={{ width: "100%", padding: "8px" }}
+            required
+          />
+        </div>
+        <div style={{ marginBottom: "10px" }}>
+          <label>Name:</label>
+          <input
+            type="text"
+            name="name"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+            style={{ width: "100%", padding: "8px" }}
+            required
+          />
+        </div>
+        <div style={{ marginBottom: "10px" }}>
+          <label>Email:</label>
+          <input
+            type="email"
+            name="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            style={{ width: "100%", padding: "8px" }}
+            required
+          />
+        </div>
+        <div style={{ marginBottom: "10px" }}>
+          <label>Address:</label>
+          <input
+            type="text"
+            name="address"
+            value={address}
+            onChange={(e) => setAddress(e.target.value)}
             style={{ width: "100%", padding: "8px" }}
             required
           />

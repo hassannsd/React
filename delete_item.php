@@ -1,37 +1,44 @@
-<?php
-// delete_item.php
+<?php 
+header("Access-Control-Allow-Origin: http://localhost:3000");
+header("Access-Control-Allow-Methods: GET, POST, DELETE, OPTIONS");
+header("Access-Control-Allow-Headers: Content-Type, Authorization");
 
-header("Access-Control-Allow-Origin: *");  // Allow all origins (you can specify 'http://localhost:3000' for stricter control)
-header("Access-Control-Allow-Methods: GET, POST, PUT, DELETE");  // Allow the necessary methods
-header("Access-Control-Allow-Headers: Content-Type");  // Allow the necessary headers
-  
+if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
+    exit(0);
+}
 
-$servername = "localhost";
-$username = "root";
-$password = "";
-$dbname = "restaurant";
+require_once("./config.php");
 
-// Create a connection
-$conn = new mysqli($servername, $username, $password, $dbname);
+$item_id = isset($_POST['Id']) ? (int) $_POST['Id'] : null;
 
-if ($conn->connect_error) {
-    echo json_encode(["success" => false, "message" => "Database connection failed"]);
+if (!$item_id) {
+    echo json_encode(["success" => false, "message" => "Item ID is missing or invalid"]);
     exit;
 }
 
-$data = json_decode(file_get_contents("php://input"), true);
-$itemId = $data['id'];
+$conn->begin_transaction();
 
-if (isset($itemId)) {
-    $sql = "DELETE FROM items WHERE id = $itemId";
-
-    if ($conn->query($sql) === TRUE) {
-        echo json_encode(["success" => true, "message" => "Item deleted successfully"]);
-    } else {
-        echo json_encode(["success" => false, "message" => "Error deleting item"]);
+try {
+    $stmt = $conn->prepare("DELETE FROM cart WHERE item_id = ?");
+    $stmt->bind_param("i", $item_id);
+    if (!$stmt->execute()) {
+        throw new Exception("Failed to delete from cart: " . $stmt->error);
     }
-} else {
-    echo json_encode(["success" => false, "message" => "Item ID is missing"]);
+    $stmt->close();
+
+    $stmt = $conn->prepare("DELETE FROM items WHERE Id = ?");
+    $stmt->bind_param("i", $item_id);
+    if (!$stmt->execute()) {
+        throw new Exception("Failed to delete from items: " . $stmt->error);
+    }
+    $stmt->close();
+
+    $conn->commit();
+    echo json_encode(["success" => true, "message" => "Item deleted successfully"]);
+
+} catch (Exception $e) {
+    $conn->rollback();
+    echo json_encode(["success" => false, "message" => "Failed to delete item: " . $e->getMessage()]);
 }
 
 $conn->close();

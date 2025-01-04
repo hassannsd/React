@@ -6,8 +6,11 @@ const LoginButton = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
+    // Check if there is a user in localStorage and update the state
     const user = JSON.parse(localStorage.getItem("user"));
-    setIsLoggedIn(!!user); // Set true if user exists in localStorage
+    if (user) {
+      setIsLoggedIn(true);
+    }
   }, []);
 
   const handleLogout = () => {
@@ -15,6 +18,7 @@ const LoginButton = () => {
     setIsLoggedIn(false);
     navigate("/login");
   };
+
   return (
     <div>
       {isLoggedIn ? (
