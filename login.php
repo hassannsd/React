@@ -9,7 +9,7 @@ ini_set('display_errors', 1);
 
 require_once("./config.php");
 
-$data = json_decode(file_get_contents("php://input"), true);
+$data = json_decode(file_get_contents("php://input"), true); // Decode JSON input
 
 if (!isset($data["username"]) || !isset($data["password"])) {
     echo json_encode(["success" => false, "message" => "Invalid input"]);
@@ -24,8 +24,8 @@ $result = $conn->query($sql);
 
 if ($result->num_rows > 0) {
     $user = $result->fetch_assoc();
-    if ($password === $user["password"]) {
-        echo json_encode([
+    if ($password === $user["password"]) { // Ensure the password check works correctly
+        echo json_encode([ // Success
             "success" => true,
             "message" => "Login successful",
             "user" => [

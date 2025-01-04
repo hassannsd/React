@@ -6,36 +6,53 @@ const AdminLogin = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [message, setMessage] = useState("");
+  const [error, setError] = useState("");
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+
   const navigate = useNavigate();
 
   const handleLogin = async (e) => {
     e.preventDefault();
 
+    // Ensure the username and password are entered
+    if (!username || !password) {
+      setError("Please enter both username and password.");
+      return;
+    }
+
+    // Create an object with the username and password
+    const requestData = {
+      username: username,
+      password: password,
+    };
+
     try {
-      const response = await axios.post(
+      const response = await fetch(
         "http://localhost/web-advanced-project/login.php",
         {
-          username: username,
-          password: password,
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json", // Set the correct content type
+          },
+          body: JSON.stringify(requestData), // Send the data as JSON
         }
       );
 
-      if (response.data.success && response.data.user) {
-        const user = response.data.user;
-        localStorage.setItem("user", JSON.stringify(user));
-        setMessage("Login successful!");
+      const data = await response.json();
 
-        if (Number(user.isAdmin == 1)) {
-          navigate("/addItem");
-        } else {
-          navigate("/");
-        }
+      console.log("Login Response:", data); // Debug the response
+
+      if (data.success) {
+        localStorage.setItem("user", JSON.stringify(data.user)); // Save user to localStorage
+        setIsLoggedIn(true); // Set the login state to true
+        setError(""); // Reset the error message
+        navigate(data.user.isAdmin == 1 ? "/addItem" : "/"); // Redirect to the dashboard
       } else {
-        setMessage(response.data.message || "Login failed");
+        setError(data.message); // Show error message if login fails
       }
-    } catch (error) {
-      console.error("Error during login:", error);
-      setMessage("An error occurred. Please try again.");
+    } catch (err) {
+      console.error("Login Error:", err); // Log any errors
+      setError("An error occurred. Please try again.");
     }
   };
 

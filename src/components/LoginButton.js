@@ -1,20 +1,17 @@
-import { Link, useNavigate } from "react-router-dom";
 import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 
 const LoginButton = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
-    // Check if there is a user in localStorage and update the state
-    const user = JSON.parse(localStorage.getItem("user"));
-    if (user) {
-      setIsLoggedIn(true);
-    }
+    const user = localStorage.getItem("user");
+    setIsLoggedIn(!!user); // Set login state based on stored data
   }, []);
 
   const handleLogout = () => {
-    localStorage.removeItem("user");
+    localStorage.removeItem("user"); // Clear localStorage
     setIsLoggedIn(false);
     navigate("/login");
   };
@@ -26,9 +23,9 @@ const LoginButton = () => {
           Logout
         </button>
       ) : (
-        <Link to="/login" className="link orange">
-          LogIn
-        </Link>
+        <button onClick={() => navigate("/login")} className="link orange">
+          Login
+        </button>
       )}
     </div>
   );
