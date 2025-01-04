@@ -10,7 +10,7 @@ const Cart = () => {
     const fetchCart = async () => {
       try {
         const response = await axios.get(
-          "http://localhost/web-advanced-project/API/cart.php"
+          "http://cheesysnacks.infinityfreeapp.com/cart.php"
         ); // Adjust the URL to your PHP endpoint
         setCart(response.data); // Set cart items from the response
       } catch (error) {
@@ -27,13 +27,13 @@ const Cart = () => {
 
   const incrementQuantity = async (cartId, currentQuantity) => {
     try {
-      await axios.put("http://localhost/web-advanced-project/cart.php", {
+      await axios.put("http://cheesysnacks.infinityfreeapp.com/cart.php", {
         cart_id: cartId,
-        quantity: currentQuantity + 1, 
+        quantity: currentQuantity + 1,
       });
 
       const response = await axios.get(
-        "http://localhost/web-advanced-project/cart.php"
+        "http://cheesysnacks.infinityfreeapp.com/cart.php"
       );
       setCart(Array.isArray(response.data) ? response.data : []);
     } catch (error) {
@@ -44,14 +44,13 @@ const Cart = () => {
   const decrementQuantity = async (cartId, currentQuantity) => {
     if (currentQuantity > 1) {
       try {
-        await axios.put("http://localhost/web-advanced-project/cart.php", {
+        await axios.put("http://cheesysnacks.infinityfreeapp.com/cart.php", {
           cart_id: cartId,
-          quantity: currentQuantity - 1, 
+          quantity: currentQuantity - 1,
         });
 
-        
         const response = await axios.get(
-          "http://localhost/web-advanced-project/cart.php"
+          "http://cheesysnacks.infinityfreeapp.com/cart.php"
         );
         setCart(Array.isArray(response.data) ? response.data : []);
       } catch (error) {
@@ -63,14 +62,14 @@ const Cart = () => {
   const removeItemFromCart = async (cartId) => {
     try {
       const response = await axios.delete(
-        "http://localhost/web-advanced-project/cart.php",
+        "http://cheesysnacks.infinityfreeapp.com/cart.php",
         {
-          data: { cart_id: cartId }, 
+          data: { cart_id: cartId },
         }
       );
 
       if (response.data.success) {
-        setCart(cart.filter((item) => item.cart_id !== cartId)); 
+        setCart(cart.filter((item) => item.cart_id !== cartId));
         setMessage("Item deleted successfully");
       } else {
         setMessage(response.data.message || "Error deleting item");

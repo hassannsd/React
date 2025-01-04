@@ -28,7 +28,7 @@ const AdminLogin = () => {
 
     try {
       const response = await fetch(
-        "http://localhost/web-advanced-project/API/index.php",
+        "http://localhost/web-advanced-project/index.php",
         {
           method: "POST",
           headers: {

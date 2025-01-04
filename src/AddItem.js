@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import axios from "axios";
-import { Link, useNavigate } from "react-router-dom"; 
+import { Link, useNavigate } from "react-router-dom";
 import LoginButton from "./components/LoginButton";
 
 const AddItem = () => {
@@ -31,7 +31,7 @@ const AddItem = () => {
 
     try {
       const response = await axios.post(
-        "http://localhost/web-advanced-project/API/add_item.php",
+        "http://cheesysnacks.infinityfreeapp.com/add_item.php",
         new URLSearchParams(formData)
       );
       if (response.data.success) {

@@ -10,7 +10,7 @@ const MenuItems = ({ addItemToCart, Notification, notificationVisible }) => {
     const fetchMenuItems = async () => {
       try {
         const response = await axios.get(
-          "http://localhost/web-advanced-project/API/menu.php"
+          "http://localhost/web-advanced-project/menu.php"
         );
         setMenuItems(response.data);
       } catch (error) {
