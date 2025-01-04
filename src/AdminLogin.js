@@ -28,7 +28,7 @@ const AdminLogin = () => {
 
     try {
       const response = await fetch(
-        "http://cheesysnacks.infinityfreeapp.com/index.php",
+        "https://cheesysnacks.infinityfreeapp.com/index.php",
         {
           method: "POST",
           headers: {

@@ -10,7 +10,7 @@ const Cart = () => {
     const fetchCart = async () => {
       try {
         const response = await axios.get(
-          "http://cheesysnacks.infinityfreeapp.com/cart.php"
+          "https://cheesysnacks.infinityfreeapp.com/cart.php"
         ); // Adjust the URL to your PHP endpoint
         setCart(response.data); // Set cart items from the response
       } catch (error) {
@@ -27,13 +27,13 @@ const Cart = () => {
 
   const incrementQuantity = async (cartId, currentQuantity) => {
     try {
-      await axios.put("http://cheesysnacks.infinityfreeapp.com/cart.php", {
+      await axios.put("https://cheesysnacks.infinityfreeapp.com/cart.php", {
         cart_id: cartId,
         quantity: currentQuantity + 1,
       });
 
       const response = await axios.get(
-        "http://cheesysnacks.infinityfreeapp.com/cart.php"
+        "https://cheesysnacks.infinityfreeapp.com/cart.php"
       );
       setCart(Array.isArray(response.data) ? response.data : []);
     } catch (error) {
@@ -44,13 +44,13 @@ const Cart = () => {
   const decrementQuantity = async (cartId, currentQuantity) => {
     if (currentQuantity > 1) {
       try {
-        await axios.put("http://cheesysnacks.infinityfreeapp.com/cart.php", {
+        await axios.put("https://cheesysnacks.infinityfreeapp.com/cart.php", {
           cart_id: cartId,
           quantity: currentQuantity - 1,
         });
 
         const response = await axios.get(
-          "http://cheesysnacks.infinityfreeapp.com/cart.php"
+          "https://cheesysnacks.infinityfreeapp.com/cart.php"
         );
         setCart(Array.isArray(response.data) ? response.data : []);
       } catch (error) {

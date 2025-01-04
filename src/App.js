@@ -29,7 +29,7 @@ const App = () => {
   const addItemToCart = async (item) => {
     try {
       // Send the item to the backend to add it to the cart database
-      await axios.post("http://cheesysnacks.infinityfreeapp.com/cart.php", {
+      await axios.post("https://cheesysnacks.infinityfreeapp.com/cart.php", {
         item_id: item.Id,
         quantity: 1, // Default quantity to add
       });
