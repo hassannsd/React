@@ -1,65 +1,65 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import Header from "./components/Header";
 
 const Cart = () => {
-  const [cart, setCart] = useState([]);
-  const [message, setMessage] = useState("");
+  const [cartItems, setCartItems] = useState([]);
+  const [loading, setLoading] = useState(true);
 
+  // Fetch cart items when the component mounts
   useEffect(() => {
-    const fetchCart = async () => {
-      try {
-        const response = await axios.get(
-          "https://cheesysnacks.infinityfreeapp.com/cart.php"
-        ); // Adjust the URL to your PHP endpoint
-        setCart(response.data); // Set cart items from the response
-      } catch (error) {
-        console.error("Error fetching cart items:", error);
-      }
-    };
-
-    fetchCart();
+    getCartItems();
   }, []);
 
-  const calculateTotal = () => {
-    return cart.reduce((total, item) => total + item.price * item.quantity, 0);
-  };
-
-  const incrementQuantity = async (cartId, currentQuantity) => {
+  // Function to fetch cart items from the server
+  const getCartItems = async () => {
     try {
-      await axios.put("https://cheesysnacks.infinityfreeapp.com/cart.php", {
-        cart_id: cartId,
-        quantity: currentQuantity + 1,
-      });
-
       const response = await axios.get(
-        "https://cheesysnacks.infinityfreeapp.com/cart.php"
+        "http://cheesysnacks.infinityfreeapp.com/cart.php"
       );
-      setCart(Array.isArray(response.data) ? response.data : []);
+      setCartItems(response.data);
+      setLoading(false);
     } catch (error) {
-      console.error("Error incrementing quantity:", error);
+      console.error("Error fetching cart items:", error);
+      setLoading(false);
     }
   };
 
-  const decrementQuantity = async (cartId, currentQuantity) => {
-    if (currentQuantity > 1) {
-      try {
-        await axios.put("https://cheesysnacks.infinityfreeapp.com/cart.php", {
+  // Function to add an item to the cart
+  const addToCart = async (itemId, quantity) => {
+    try {
+      const response = await axios.post(
+        "http://cheesysnacks.infinityfreeapp.com/cart.php",
+        {
+          item_id: itemId,
+          quantity: quantity,
+        }
+      );
+      alert(response.data.message);
+      getCartItems(); // Refresh the cart after adding
+    } catch (error) {
+      console.error("Error adding item to cart:", error);
+    }
+  };
+
+  // Function to update the quantity of an item in the cart
+  const updateQuantity = async (cartId, quantity) => {
+    try {
+      const response = await axios.put(
+        "http://cheesysnacks.infinityfreeapp.com/cart.php",
+        {
           cart_id: cartId,
-          quantity: currentQuantity - 1,
-        });
-
-        const response = await axios.get(
-          "https://cheesysnacks.infinityfreeapp.com/cart.php"
-        );
-        setCart(Array.isArray(response.data) ? response.data : []);
-      } catch (error) {
-        console.error("Error decrementing quantity:", error);
-      }
+          quantity: quantity,
+        }
+      );
+      alert(response.data.message);
+      getCartItems(); // Refresh the cart after updating
+    } catch (error) {
+      console.error("Error updating quantity:", error);
     }
   };
 
-  const removeItemFromCart = async (cartId) => {
+  // Function to remove an item from the cart
+  const deleteItem = async (cartId) => {
     try {
       const response = await axios.delete(
         "http://cheesysnacks.infinityfreeapp.com/cart.php",
@@ -67,75 +67,46 @@ const Cart = () => {
           data: { cart_id: cartId },
         }
       );
-
-      if (response.data.success) {
-        setCart(cart.filter((item) => item.cart_id !== cartId));
-        setMessage("Item deleted successfully");
-      } else {
-        setMessage(response.data.message || "Error deleting item");
-      }
+      alert(response.data.message);
+      getCartItems(); // Refresh the cart after deleting
     } catch (error) {
-      console.error("Error deleting item:", error);
-      setMessage("An error occurred while deleting the item.");
+      console.error("Error deleting item from cart:", error);
     }
   };
 
   return (
-    <>
-      <Header />
-      <div className="container my-5">
-        <h2 className="mb-4">Your Cart</h2>
-
-        {cart && cart.length > 0 ? (
-          cart.map((item) => (
-            <li
-              key={item.cart_id}
-              className="list-group-item d-flex justify-content-between align-items-center"
-              style={{
-                paddingBottom: "5px",
-                marginTop: "10px",
-                borderBottom: "1px solid gray",
-              }}
-            >
-              <div>
-                {item.Name} - ${Number(item.price).toFixed(2)} x {item.quantity}
-              </div>
-              <div>
-                <button
-                  className="btn btn-warning btn-sm mx-1"
-                  disabled={item.quantity === 1}
-                  onClick={() => decrementQuantity(item.cart_id, item.quantity)}
-                >
-                  -
-                </button>
-                <button
-                  className="btn btn-primary btn-sm mx-1"
-                  onClick={() => incrementQuantity(item.cart_id, item.quantity)}
-                >
-                  +
-                </button>
-                <button
-                  className="btn btn-danger btn-sm mx-1"
-                  onClick={() => removeItemFromCart(item.cart_id)}
-                >
-                  Remove
-                </button>
-              </div>
-            </li>
-          ))
-        ) : (
-          <p className="text-muted">Your cart is empty. Start adding items!</p>
-        )}
-        <div
-          className="mt-4"
-          style={{ display: "flex", justifyContent: "space-between" }}
-        >
-          <strong>Total: ${calculateTotal().toFixed(2)}</strong>
-          <button className="btn btn-success">Checkout</button>
-        </div>
-        {message && <div className="alert alert-info mt-3">{message}</div>}
-      </div>
-    </>
+    <div>
+      <h2>Your Cart</h2>
+      {loading ? (
+        <p>Loading...</p>
+      ) : (
+        <ul>
+          {cartItems.length > 0 ? (
+            cartItems.map((item) => (
+              <li key={item.cart_id}>
+                <div>
+                  <h3>{item.Name}</h3>
+                  <p>Price: ${item.price}</p>
+                  <p>Quantity: {item.quantity}</p>
+                  <button
+                    onClick={() =>
+                      updateQuantity(item.cart_id, item.quantity + 1)
+                    }
+                  >
+                    Increase Quantity
+                  </button>
+                  <button onClick={() => deleteItem(item.cart_id)}>
+                    Remove from Cart
+                  </button>
+                </div>
+              </li>
+            ))
+          ) : (
+            <p>Your cart is empty.</p>
+          )}
+        </ul>
+      )}
+    </div>
   );
 };
 

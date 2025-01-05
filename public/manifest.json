@@ -1,0 +1,9 @@
+{
+  "short_name": "CheesySnacks",
+  "name": "Cheesy Snacks App",
+  
+  "start_url": "/",
+  "display": "standalone",
+  "theme_color": "#ffffff",
+  "background_color": "#ffffff"
+}

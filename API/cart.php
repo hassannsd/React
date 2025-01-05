@@ -3,19 +3,19 @@
 header("Access-Control-Allow-Origin: *");
 header("Access-Control-Allow-Headers: Content-Type");
 header("Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS");
-header("Content-Type: application/json");
+header("Content-Type: application/x-www-form-urlencoded");
 
 if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
     http_response_code(200);
     exit;
 }
 
-$host = "localhost";
-$db_name = "restaurant";
-$username = "root";
-$password = "";
+$host = "sql103.infinityfreeapp.com";
+$username = "if0_38037638";
+$password = "1Sx5fDlKr4";
+$dbname = "if0_38037638_cheasysnacks";
 
-$conn = new PDO("mysql:host=$host;dbname=$db_name", $username, $password);
+$conn = new PDO("mysql:host=$host;dbname=$dbname", $username, $password);
 $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
 $requestMethod = $_SERVER['REQUEST_METHOD'];

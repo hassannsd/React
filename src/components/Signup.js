@@ -60,7 +60,7 @@ const Signup = ({
 
     try {
       const response = await fetch(
-        "https://cheesysnacks.infinityfreeapp.com/signup.php",
+        "http://cheesysnacks.infinityfreeapp.com/signup.php",
         {
           method: "POST",
           body: formData,

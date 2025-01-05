@@ -34,7 +34,7 @@ const AdminPage = () => {
 
     axios
       .post(
-        "https://cheesysnacks.infinityfreeapp.com/delete_item.php",
+        "http://cheesysnacks.infinityfreeapp.com/delete_item.php",
         new URLSearchParams({ Id: itemId }),
         {
           headers: {

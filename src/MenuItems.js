@@ -9,10 +9,20 @@ const MenuItems = ({ addItemToCart, Notification, notificationVisible }) => {
   useEffect(() => {
     const fetchMenuItems = async () => {
       try {
-        const response = await axios.get(
-          "https://cheesysnacks.infinityfreeapp.com/menu.php"
-        );
-        setMenuItems(response.data);
+        const axiosInstance = axios.create({
+          baseURL: "http://cheesysnacks.infinityfreeapp.com", // Use HTTP
+          timeout: 5000,
+        });
+
+        axiosInstance
+          .get("/menu.php")
+          .then((response) => {
+            console.log("Menu:", response.data);
+            setMenuItems(response.data);
+          })
+          .catch((error) => {
+            console.error("Error fetching menu:", error);
+          });
       } catch (error) {
         console.error("Error fetching menu items:", error);
       }

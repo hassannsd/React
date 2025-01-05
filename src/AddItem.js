@@ -31,7 +31,7 @@ const AddItem = () => {
 
     try {
       const response = await axios.post(
-        "https://cheesysnacks.infinityfreeapp.com/add_item.php",
+        "http://cheesysnacks.infinityfreeapp.com/add_item.php",
         new URLSearchParams(formData)
       );
       if (response.data.success) {
